@@ -1,0 +1,26 @@
+{
+  "call": ["find_features"],
+  "algorithm": ["xcms3"],
+  "parameters": {
+    "ppm": [12],
+    "peakwidth": [5, 40],
+    "snthresh": [20],
+    "prefilter": [5, 1500],
+    "mzCenterFun": ["wMean"],
+    "integrate": [1],
+    "mzdiff": [0.0005],
+    "fitgauss": [true],
+    "noise": [500],
+    "verboseColumns": [true],
+    "roiList": [],
+    "firstBaselineCheck": [true],
+    "roiScales": [],
+    "extendLengthMSW": [false],
+    "class": ["CentWaveParam"]
+  },
+  "software": ["xcms"],
+  "developer": ["Ralf Tautenhahn, Johannes Rainer"],
+  "contact": ["rtautenh@ipb-halle.de"],
+  "link": ["https://rdrr.io/bioc/xcms/man/findChromPeaks-centWave.html"],
+  "doi": ["https://doi.org/10.1186/1471-2105-9-504"]
+}
