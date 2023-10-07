@@ -30,6 +30,7 @@ function MsProcessing({
   console.log(find_features);
 
   const [findFeatures, setFindFeatures] = useState([]);
+  const [params, setParams] = useState([]);
   const [algo, setAlgo] = useState("");
   const [openObj, setOpenObj] = useState(false);
   const [selectAlgo, setSelectAlgo] = useState(false);
@@ -92,8 +93,7 @@ function MsProcessing({
       .then((response) => {
         console.log("Getting features", response);
         console.log(response.data);
-        setFindFeatures(response.data);
-        console.log(findFeatures);
+        setFindFeatures(response.data.file_name);
         setOpenObj(true);
       })
       .catch((error) => {
@@ -121,9 +121,22 @@ function MsProcessing({
     }
   }, [findFeatures, group_features, edges, id, setNodes]);
 
-  const changeParameters = () => {
-    setOpenModal(true);
-    console.log("Parameters!");
+  const getParameters = () => {
+    const requestData = {
+      fileNames: find_features,
+      algorithm: algo,
+    };
+    axios
+      .post("http://127.0.0.1:8000/get_parameters", requestData)
+      .then((response) => {
+        console.log("Getting Parameters", response);
+        setParams(response.data.parameters);
+        setOpenModal(true);
+      })
+      .catch((error) => {
+        console.error("Error sending files:", error);
+        console.log(requestData);
+      });
   };
 
   return (
@@ -137,7 +150,7 @@ function MsProcessing({
         }}
       >
         <SettingsIcon
-          onClick={changeParameters}
+          onClick={getParameters}
           style={{ cursor: "pointer" }}
           fontSize="1"
         />
@@ -256,6 +269,7 @@ function MsProcessing({
           <ChangeParameters
             find_features={findFeatures}
             handleClose={handleClose}
+            params={params}
           />
         </Box>
       </Modal>

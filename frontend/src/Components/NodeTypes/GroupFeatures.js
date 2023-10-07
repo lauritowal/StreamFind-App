@@ -30,6 +30,7 @@ function GroupFeatures({
   console.log(group_features);
 
   const [groupFeatures, setGroupFeatures] = useState([]);
+  const [params, setParams] = useState([]);
   const [algo, setAlgo] = useState("");
   const [openObj, setOpenObj] = useState(false);
   const [selectAlgo, setSelectAlgo] = useState(false);
@@ -92,8 +93,7 @@ function GroupFeatures({
       .then((response) => {
         console.log("Getting group features", response);
         console.log(response.data);
-        setGroupFeatures(response.data);
-        console.log(groupFeatures);
+        setGroupFeatures(response.data.file_name);
         setOpenObj(true);
       })
       .catch((error) => {
@@ -101,9 +101,22 @@ function GroupFeatures({
       });
   };
 
-  const changeParameters = () => {
-    setOpenModal(true);
-    console.log("Parameters!");
+  const getParameters = () => {
+    const requestData = {
+      fileNames: group_features,
+      algorithm: algo,
+    };
+    axios
+      .post("http://127.0.0.1:8000/get_parameters", requestData)
+      .then((response) => {
+        console.log("Getting Parameters", response);
+        setParams(response.data.parameters.groupParam);
+        setOpenModal(true);
+      })
+      .catch((error) => {
+        console.error("Error sending files:", error);
+        console.log(requestData);
+      });
   };
 
   return (
@@ -117,7 +130,7 @@ function GroupFeatures({
         }}
       >
         <SettingsIcon
-          onClick={changeParameters}
+          onClick={getParameters}
           style={{ cursor: "pointer" }}
           fontSize="1"
         />
@@ -233,6 +246,7 @@ function GroupFeatures({
           <ChangeParameters
             handleClose={handleClose}
             group_features={groupFeatures}
+            params={params}
           />
         </Box>
       </Modal>
