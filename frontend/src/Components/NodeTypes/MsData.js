@@ -29,6 +29,7 @@ function MsData({
   console.log(edges);
   const [openModal, setOpenModal] = useState(false);
   const [openObj, setOpenObj] = useState(false);
+  const [color, setColor] = useState(false);
   const [msDataObj, setMsDataObj] = useState([]);
 
   const handleOpen = () => {
@@ -72,6 +73,7 @@ function MsData({
         console.log("MsData Object created!", response);
         setMsDataObj(response.data);
         setOpenObj(true);
+        setColor(true);
       })
       .catch((error) => {
         console.error("Error sending files:", error);
@@ -144,32 +146,17 @@ function MsData({
           out
         </p>
       </Handle>
-      <Handle
-        type="target"
+      <PlayIcon
+        onClick={createMsDataObj}
         style={{
-          background: edges.length > 0 ? "white" : "grey",
+          color: color ? "green" : "red",
+          cursor: "pointer",
+          fontSize: "10px",
+          position: "absolute",
+          top: -6,
+          left: 19,
         }}
-        position={Position.Top}
-        id="b"
-        isConnectable={isConnectable}
-      >
-        <p style={{ fontSize: "6px", position: "absolute", top: -12, left: 8 }}>
-          input
-        </p>
-        {edges.length > 0 && (
-          <PlayIcon
-            onClick={createMsDataObj}
-            style={{
-              color: inputFiles.length > 0 ? "green" : "red",
-              cursor: "pointer",
-              fontSize: "10px",
-              position: "absolute",
-              top: -2,
-              left: -2,
-            }}
-          />
-        )}
-      </Handle>
+      />
       <Modal
         open={openObj}
         onClose={handleClose}

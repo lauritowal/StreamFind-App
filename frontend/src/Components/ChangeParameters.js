@@ -6,27 +6,13 @@ import Typography from "@mui/material/Typography";
 import { FormControl, Grid } from "@mui/material";
 import { Button, Input } from "@mui/material";
 
-function ChangeParameters({ find_features, handleClose, group_features }) {
-  const initialFormState = {
-    ppm: 12,
-    minpeakwidth: 5,
-    maxpeakwidth: 40,
-    snthresh: 20,
-    minprefilter: 5,
-    maxprefilter: 1500,
-    mzCenterFun: "wMean",
-    integrate: 1,
-    mzdiff: 0.0005,
-    fitgauss: true,
-    noise: 500,
-    verboseColumns: true,
-    firstBaselineCheck: true,
-    extendLengthMSW: false,
-    class: "CentWaveParam",
-  };
-
-  const [formState, setFormState] = useState(initialFormState);
-
+function ChangeParameters({
+  find_features,
+  handleClose,
+  group_features,
+  params,
+}) {
+  const [formState, setFormState] = useState(params);
   const handleChange = (paramName, value) => {
     setFormState((prevState) => ({
       ...prevState,
@@ -76,7 +62,7 @@ function ChangeParameters({ find_features, handleClose, group_features }) {
         Parameters
       </Typography>
       <FormControl onSubmit={handleSubmit}>
-        {Object.keys(initialFormState).map((paramName) => (
+        {Object.keys(formState).map((paramName) => (
           <div
             key={paramName}
             style={{ display: "flex", alignItems: "center" }}

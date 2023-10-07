@@ -26,7 +26,7 @@ export default () => {
             style={{ fontSize: "6em", color: "orange", cursor: "pointer" }}
           />
         </div>
-        <h4>MsData</h4>
+        <h4>MassSpecData</h4>
       </div>
       <div className="demo_box">
         <div className="upper_div">

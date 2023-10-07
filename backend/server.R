@@ -147,55 +147,73 @@ function(req) {
     print("applying find features...")
     saveRDS(updated_cache, paste0(cache_key, ".rds"))
     print("updating cache...")
-    return(cache_key)
+    result <- list(
+      file_name=cache_key,
+      algo=algo
+    )
+    return(result)
   } else {
     result <- list(
       error = "File not found!"
     )
     return(result)}}
 
+#* Getting parameters
+#* @post /get_parameters
+function(req) {
+  fileArray <- req$postBody
+  fileNames <- fromJSON(fileArray)
+  algo <- fileNames$algorithm
+  cache_key <- fileNames$fileNames
+  if (file.exists(paste0(cache_key, ".rds"))) {
+    cached_result <- readRDS(paste0(cache_key, ".rds"))
+    if (algo == "qPeaks") {
+      gfs <- Settings_find_features_qPeaks()
+    } else if (algo == "xcms3_centwave") {
+      gfs <- Settings_find_features_xcms3_centwave()
+    } else if (algo == "xcms3_matchedfilter") {
+      gfs <- Settings_find_features_xcms3_matchedfilter()
+    } else if (algo == "openms") {
+      gfs <- Settings_find_features_openms()
+    } else if (algo == "kpic2") {
+      gfs <- Settings_find_features_kpic2()
+    } else if (algo == "xcms3_peakdensity") {
+      gfs <- Settings_group_features_xcms3_peakdensity()
+    } else if (algo == "xcms3_peakdensity_peakgroups") {
+      gfs <- Settings_group_features_xcms3_peakdensity_peakgroups()
+    }
+    print("getting parameters...")
+    result <- list(
+      parameters=gfs$parameters
+    )
+    return(result)
+  } else {
+    result <- list(
+      error = "File not found!"
+    )
+    return(result)}}
+
+
 #* Applying find_features on MsData with custom parameters
 #* @post /custom_find_features
 function(req) {
   data <- req$postBody
+  browser()
   datajson <- fromJSON(data)
-  params<-datajson$parameters
+  params <- as.list(datajson$parameters)
+  print(params)
   cache_key<-datajson$msData
   type<-datajson$data_type
-  settings <- list(
-    if (type=="find_features"){
-      call = "find_features"}
-    else{
-      call = "group_features"
-    },
-    algorithm = "xcms3",
-    parameters = xcms::CentWaveParam(
-      ppm = as.numeric(params$ppm),
-      peakwidth = c(as.numeric(params$minpeakwidth),as.numeric(params$maxpeakwidth)),
-      snthresh = as.numeric(params$snthresh),
-      prefilter = c(as.numeric(params$minprefilter),as.numeric(params$maxprefilter)),
-      mzCenterFun = as.character(params$mzCenterFun),
-      integrate = as.numeric(params$integrate),
-      mzdiff = as.numeric(params$mzdiff),
-      fitgauss = as.logical(params$fitgauss),
-      noise = as.numeric(params$noise),
-      verboseColumns = as.logical(params$verboseColumns),
-      roiList = list(),
-      firstBaselineCheck = as.logical(params$firstBaselineCheck),
-      roiScales = numeric(),
-      extendLengthMSW = as.logical(params$extendLengthMSW)
-    ))
-  print(settings)
   if (file.exists(paste0(cache_key, ".rds"))) {
     if(type == "find_features"){
     cached_result <- readRDS(paste0(cache_key, ".rds"))
-    updated_cache<-cached_result$find_features(settings)
-    print("applying find features...")
+    updated_cache<-cached_result$add_settings(params)
+    print("applying custom parameters...")
     saveRDS(updated_cache, paste0(cache_key, ".rds"))
     print("updating cache...")}
     else if(type == "group_features"){
       cached_result <- readRDS(paste0(cache_key, ".rds"))
-      updated_cache<-cached_result$group_features(settings)
+      updated_cache<-cached_result$group_features(params)
       print("applying group features...")
       saveRDS(updated_cache, paste0(cache_key, ".rds"))
       print("updating cache...")}
@@ -227,7 +245,11 @@ function(req) {
     print("grouping features...")
     saveRDS(updated_cache, paste0(cache_key, ".rds"))
     print("updating cache...")
-    return(cache_key)
+    result <- list(
+      file_name=cache_key,
+      algo=algo
+    )
+    return(result)
   } else {
     result <- list(
       error = "File not found!"
