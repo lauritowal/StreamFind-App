@@ -16,21 +16,6 @@ export default () => {
       <div className="demo_box">
         <div className="upper_div">
           <MenuIcon></MenuIcon>
-          <h4>Objects</h4>
-        </div>
-        <div
-          onDragStart={(event) => onDragStart(event, "MsDataNode")}
-          draggable
-        >
-          <FolderIcon
-            style={{ fontSize: "6em", color: "orange", cursor: "pointer" }}
-          />
-        </div>
-        <h4>MassSpecData</h4>
-      </div>
-      <div className="demo_box">
-        <div className="upper_div">
-          <MenuIcon></MenuIcon>
           <h4>Input</h4>
         </div>
         <div
@@ -46,7 +31,22 @@ export default () => {
       <div className="demo_box">
         <div className="upper_div">
           <MenuIcon></MenuIcon>
-          <h4>Ms Pre-Processing</h4>
+          <h4>Engines</h4>
+        </div>
+        <div
+          onDragStart={(event) => onDragStart(event, "MsDataNode")}
+          draggable
+        >
+          <FolderIcon
+            style={{ fontSize: "6em", color: "orange", cursor: "pointer" }}
+          />
+        </div>
+        <h4>MassSpecData</h4>
+      </div>
+      <div className="demo_box">
+        <div className="upper_div">
+          <MenuIcon></MenuIcon>
+          <h4>Module Processing</h4>
         </div>
         <div
           onDragStart={(event) => onDragStart(event, "FindFeaturesNode")}
