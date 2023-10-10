@@ -289,7 +289,6 @@ function MsProcessing({
           <ChangeParameters
             find_features={find_features}
             handleClose={handleClose}
-            params={params}
             algo={algo}
             version={version}
           />
