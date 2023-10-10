@@ -114,12 +114,12 @@ function MsDataDetails({ msDataObj, handleClose }) {
         style={{
           position: "absolute",
           top: 340,
-          left: 100,
+          left: 40,
         }}
         data={plot.data}
         layout={{
           ...plot.layout,
-          width: 1200,
+          width: 1400,
           height: 450,
         }}
       />

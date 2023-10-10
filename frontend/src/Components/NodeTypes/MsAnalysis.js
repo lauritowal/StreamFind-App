@@ -133,7 +133,7 @@ const MsAnalysis = ({
               <CloseIcon />
             </IconButton>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Select mZmL file
+              Select MassSpec files
             </Typography>
             <Button onClick={openChild}>See Files</Button>
             {selectedFiles && (

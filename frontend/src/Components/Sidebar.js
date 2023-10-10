@@ -15,23 +15,26 @@ export default () => {
     <div className="sidebar">
       <div className="demo_box">
         <div className="upper_div">
-          <MenuIcon></MenuIcon>
-          <h4>Input</h4>
+          <h2 className="boxText">Input</h2>
         </div>
         <div
           onDragStart={(event) => onDragStart(event, "MsAnalysisNode")}
           draggable
         >
           <InsertdriveIcon
-            style={{ fontSize: "6em", color: "green", cursor: "pointer" }}
+            style={{
+              fontSize: "6em",
+              color: "green",
+              cursor: "pointer",
+              marginLeft: "-9px",
+            }}
           />
         </div>
-        <h4>mzML</h4>
+        <h3>MassSpec Files</h3>
       </div>
       <div className="demo_box">
         <div className="upper_div">
-          <MenuIcon></MenuIcon>
-          <h4>Engines</h4>
+          <h2 className="boxText">Engines</h2>
         </div>
         <div
           onDragStart={(event) => onDragStart(event, "MsDataNode")}
@@ -41,12 +44,11 @@ export default () => {
             style={{ fontSize: "6em", color: "orange", cursor: "pointer" }}
           />
         </div>
-        <h4>MassSpecData</h4>
+        <h3>MassSpecData</h3>
       </div>
       <div className="demo_box">
         <div className="upper_div">
-          <MenuIcon></MenuIcon>
-          <h4>Module Processing</h4>
+          <h2 className="boxText">Module Processing</h2>
         </div>
         <div
           onDragStart={(event) => onDragStart(event, "FindFeaturesNode")}
@@ -54,14 +56,14 @@ export default () => {
         >
           <QueryIcon style={{ fontSize: "6em", cursor: "pointer" }} />
         </div>
-        <h4>find_features</h4>
+        <h3>find_features</h3>
         <div
           onDragStart={(event) => onDragStart(event, "GroupFeaturesNode")}
           draggable
         >
           <QueryIcon style={{ fontSize: "6em", cursor: "pointer" }} />
         </div>
-        <h4>group_features</h4>
+        <h3>group_features</h3>
       </div>
     </div>
   );

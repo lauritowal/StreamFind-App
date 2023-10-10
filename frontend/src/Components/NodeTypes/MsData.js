@@ -176,9 +176,9 @@ function MsData({
             <CloseIcon />
           </IconButton>
           <div style={{ display: "flex" }}>
-            <CheckCircleIcon />
+            <CheckCircleIcon sx={{ color: "green", marginRight: "4px" }} />
             <Typography id="modal-modal-title" variant="h9" component="h2">
-              msData Object created!
+              MassSpec data object created!
             </Typography>
           </div>
         </Box>
