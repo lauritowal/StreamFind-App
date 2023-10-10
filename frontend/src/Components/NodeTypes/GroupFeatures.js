@@ -242,11 +242,17 @@ function GroupFeatures({
             <CloseIcon />
           </IconButton>
           <div style={{ display: "flex" }}>
-            <CheckCircleIcon />
+            <CheckCircleIcon sx={{ color: "green", marginRight: "4px" }} />
             <Typography id="modal-modal-title" variant="h9" component="h2">
-              group_features applied!
+              Group features applied with {algo}!
             </Typography>
           </div>
+          <Button
+            style={{ position: "absolute", right: 50, top: 120 }}
+            onClick={handleClose}
+          >
+            OK
+          </Button>
         </Box>
       </Modal>
       <Modal
