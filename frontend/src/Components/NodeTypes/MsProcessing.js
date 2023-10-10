@@ -28,10 +28,12 @@ function MsProcessing({
     console.log(evt.target.value);
   }, []);
   console.log(find_features);
+  console.log(group_features);
 
   const [findFeatures, setFindFeatures] = useState([]);
   const [params, setParams] = useState([]);
   const [algo, setAlgo] = useState("");
+  const [version, setVersion] = useState("");
   const [openObj, setOpenObj] = useState(false);
   const [selectAlgo, setSelectAlgo] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -124,6 +126,7 @@ function MsProcessing({
   const getParameters = () => {
     const requestData = {
       fileNames: find_features,
+      type: "find_features",
       algorithm: algo,
     };
     axios
@@ -131,6 +134,7 @@ function MsProcessing({
       .then((response) => {
         console.log("Getting Parameters", response);
         setParams(response.data.parameters);
+        setVersion(response.data.version);
         setOpenModal(true);
       })
       .catch((error) => {
@@ -267,9 +271,11 @@ function MsProcessing({
       >
         <Box sx={style2}>
           <ChangeParameters
-            find_features={findFeatures}
+            find_features={find_features}
             handleClose={handleClose}
             params={params}
+            algo={algo}
+            version={version}
           />
         </Box>
       </Modal>

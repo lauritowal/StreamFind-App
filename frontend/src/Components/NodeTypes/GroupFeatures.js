@@ -32,6 +32,7 @@ function GroupFeatures({
   const [groupFeatures, setGroupFeatures] = useState([]);
   const [params, setParams] = useState([]);
   const [algo, setAlgo] = useState("");
+  const [version, setVersion] = useState("");
   const [openObj, setOpenObj] = useState(false);
   const [selectAlgo, setSelectAlgo] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -104,6 +105,7 @@ function GroupFeatures({
   const getParameters = () => {
     const requestData = {
       fileNames: group_features,
+      type: "group_features",
       algorithm: algo,
     };
     axios
@@ -111,6 +113,7 @@ function GroupFeatures({
       .then((response) => {
         console.log("Getting Parameters", response);
         setParams(response.data.parameters.groupParam);
+        setVersion(response.data.version);
         setOpenModal(true);
       })
       .catch((error) => {
@@ -245,8 +248,10 @@ function GroupFeatures({
         <Box sx={style2}>
           <ChangeParameters
             handleClose={handleClose}
-            group_features={groupFeatures}
+            group_features={group_features}
             params={params}
+            algo={algo}
+            version={version}
           />
         </Box>
       </Modal>

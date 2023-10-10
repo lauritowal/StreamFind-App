@@ -158,6 +158,7 @@ function(req) {
     )
     return(result)}}
 
+
 #* Getting parameters
 #* @post /get_parameters
 function(req) {
@@ -165,26 +166,18 @@ function(req) {
   fileNames <- fromJSON(fileArray)
   algo <- fileNames$algorithm
   cache_key <- fileNames$fileNames
+  type <- fileNames$type
   if (file.exists(paste0(cache_key, ".rds"))) {
     cached_result <- readRDS(paste0(cache_key, ".rds"))
-    if (algo == "qPeaks") {
-      gfs <- Settings_find_features_qPeaks()
-    } else if (algo == "xcms3_centwave") {
-      gfs <- Settings_find_features_xcms3_centwave()
-    } else if (algo == "xcms3_matchedfilter") {
-      gfs <- Settings_find_features_xcms3_matchedfilter()
-    } else if (algo == "openms") {
-      gfs <- Settings_find_features_openms()
-    } else if (algo == "kpic2") {
-      gfs <- Settings_find_features_kpic2()
-    } else if (algo == "xcms3_peakdensity") {
-      gfs <- Settings_group_features_xcms3_peakdensity()
-    } else if (algo == "xcms3_peakdensity_peakgroups") {
-      gfs <- Settings_group_features_xcms3_peakdensity_peakgroups()
-    }
+      gfs <- cached_result$get_settings()
     print("getting parameters...")
+    if (type == "find_features") {
+      setting <- gfs$find_features
+    } else if (type == "group_features") {
+      setting <- gfs$group_features}
     result <- list(
-      parameters=gfs$parameters
+      parameters=setting$parameters,
+      version=setting$version
     )
     return(result)
   } else {
@@ -198,27 +191,31 @@ function(req) {
 #* @post /custom_find_features
 function(req) {
   data <- req$postBody
-  browser()
   datajson <- fromJSON(data)
-  params <- as.list(datajson$parameters)
-  print(params)
+  params <- datajson$parameters
   cache_key<-datajson$msData
   type<-datajson$data_type
+  algo<-datajson$algo
+  version<-datajson$version
+  print(params)
+  if (type == "group_features"){
+    groupParam=params
+    processing_settings<-ProcessingSettings(call = type,
+                                            algorithm = algo,
+                                            parameters=list(groupParam=groupParam), version=version)
+  }
+  else{
+    processing_settings<-ProcessingSettings(call = type,
+                                            algorithm = algo,
+                                            parameters=params, version=version)}
   if (file.exists(paste0(cache_key, ".rds"))) {
-    if(type == "find_features"){
     cached_result <- readRDS(paste0(cache_key, ".rds"))
-    updated_cache<-cached_result$add_settings(params)
+    updated_cache<-cached_result$add_settings(setting=processing_settings, replace = TRUE)
     print("applying custom parameters...")
     saveRDS(updated_cache, paste0(cache_key, ".rds"))
-    print("updating cache...")}
-    else if(type == "group_features"){
-      cached_result <- readRDS(paste0(cache_key, ".rds"))
-      updated_cache<-cached_result$group_features(params)
-      print("applying group features...")
-      saveRDS(updated_cache, paste0(cache_key, ".rds"))
-      print("updating cache...")}
-    return(cache_key)
-  } else {
+    print("updating cache...")
+    return(cache_key)}
+  else {
     result <- list(
       error = "File not found!"
     )
