@@ -37,6 +37,7 @@ function MsProcessing({
   const [openObj, setOpenObj] = useState(false);
   const [selectAlgo, setSelectAlgo] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [color, setColor] = useState(false);
 
   const style = {
     position: "absolute",
@@ -97,6 +98,7 @@ function MsProcessing({
         console.log(response.data);
         setFindFeatures(response.data.file_name);
         setOpenObj(true);
+        setColor(true);
       })
       .catch((error) => {
         console.error("Error sending files:", error);
@@ -163,9 +165,15 @@ function MsProcessing({
         find_features
       </p>
       <PlayIcon
-        onClick={openSelectAlgo}
+        onClick={() => {
+          if (algo.length > 0) {
+            getFeatures();
+          } else {
+            openSelectAlgo();
+          }
+        }}
         style={{
-          color: find_features.length > 0 ? "green" : "red",
+          color: color ? "green" : "red",
           cursor: "pointer",
           fontSize: "10px",
           position: "absolute",
@@ -234,7 +242,9 @@ function MsProcessing({
               <MenuItem value="kpic2">kpic2ß</MenuItem>
             </Select>
           </FormControl>
-          <Button onClick={getFeatures}>Apply!</Button>
+          <div>
+            <Button onClick={handleClose}>OK</Button>
+          </div>
         </Box>
       </Modal>
       <Modal
@@ -256,11 +266,17 @@ function MsProcessing({
             <CloseIcon />
           </IconButton>
           <div style={{ display: "flex" }}>
-            <CheckCircleIcon />
+            <CheckCircleIcon sx={{ color: "green", marginRight: "4px" }} />
             <Typography id="modal-modal-title" variant="h9" component="h2">
-              find_features applied with {algo}!
+              find features applied with {algo}!
             </Typography>
           </div>
+          <Button
+            style={{ position: "absolute", right: 50, top: 120 }}
+            onClick={handleClose}
+          >
+            OK
+          </Button>
         </Box>
       </Modal>
       <Modal

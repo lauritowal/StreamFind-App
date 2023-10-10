@@ -36,6 +36,7 @@ function GroupFeatures({
   const [openObj, setOpenObj] = useState(false);
   const [selectAlgo, setSelectAlgo] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [color, setColor] = useState(false);
 
   const style = {
     position: "absolute",
@@ -96,6 +97,7 @@ function GroupFeatures({
         console.log(response.data);
         setGroupFeatures(response.data.file_name);
         setOpenObj(true);
+        setColor(true);
       })
       .catch((error) => {
         console.error("Error sending files:", error);
@@ -142,9 +144,15 @@ function GroupFeatures({
         group_features
       </p>
       <PlayIcon
-        onClick={openSelectAlgo}
+        onClick={() => {
+          if (algo.length > 0) {
+            getFeatures();
+          } else {
+            openSelectAlgo();
+          }
+        }}
         style={{
-          color: group_features.length > 0 ? "green" : "red",
+          color: color ? "green" : "red",
           cursor: "pointer",
           fontSize: "10px",
           position: "absolute",
@@ -210,7 +218,9 @@ function GroupFeatures({
               </MenuItem>
             </Select>
           </FormControl>
-          <Button onClick={getFeatures}>Apply!</Button>
+          <div>
+            <Button onClick={handleClose}>OK</Button>
+          </div>
         </Box>
       </Modal>
       <Modal
@@ -232,11 +242,17 @@ function GroupFeatures({
             <CloseIcon />
           </IconButton>
           <div style={{ display: "flex" }}>
-            <CheckCircleIcon />
+            <CheckCircleIcon sx={{ color: "green", marginRight: "4px" }} />
             <Typography id="modal-modal-title" variant="h9" component="h2">
-              group_features applied!
+              Group features applied with {algo}!
             </Typography>
           </div>
+          <Button
+            style={{ position: "absolute", right: 50, top: 120 }}
+            onClick={handleClose}
+          >
+            OK
+          </Button>
         </Box>
       </Modal>
       <Modal

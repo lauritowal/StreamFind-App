@@ -111,18 +111,29 @@ function MsDataDetails({ msDataObj, handleClose }) {
         </tbody>
       </table>
       <Plot
-        style={{ position: "absolute", top: 340, left: 100 }}
+        style={{
+          position: "absolute",
+          top: 340,
+          left: 100,
+        }}
         data={plot.data}
-        layout={plot.layout}
+        layout={{
+          ...plot.layout,
+          width: 1200,
+          height: 450,
+        }}
       />
       <Button
-        variant="outlined"
         onClick={handleClose}
         size="large"
         color="primary"
-        style={{ position: "absolute", top: 700, left: 1300 }}
+        style={{
+          position: "absolute",
+          top: 800,
+          left: 1400,
+        }}
       >
-        Save msData
+        OK
       </Button>
       <Modal
         open={openModal}
