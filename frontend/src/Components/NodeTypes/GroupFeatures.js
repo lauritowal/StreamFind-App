@@ -249,7 +249,6 @@ function GroupFeatures({
           <ChangeParameters
             handleClose={handleClose}
             group_features={group_features}
-            params={params}
             algo={algo}
             version={version}
           />
