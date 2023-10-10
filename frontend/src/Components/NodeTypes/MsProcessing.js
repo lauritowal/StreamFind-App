@@ -37,6 +37,7 @@ function MsProcessing({
   const [openObj, setOpenObj] = useState(false);
   const [selectAlgo, setSelectAlgo] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [color, setColor] = useState(false);
 
   const style = {
     position: "absolute",
@@ -97,6 +98,7 @@ function MsProcessing({
         console.log(response.data);
         setFindFeatures(response.data.file_name);
         setOpenObj(true);
+        setColor(true);
       })
       .catch((error) => {
         console.error("Error sending files:", error);
@@ -165,7 +167,7 @@ function MsProcessing({
       <PlayIcon
         onClick={openSelectAlgo}
         style={{
-          color: find_features.length > 0 ? "green" : "red",
+          color: color ? "green" : "red",
           cursor: "pointer",
           fontSize: "10px",
           position: "absolute",
