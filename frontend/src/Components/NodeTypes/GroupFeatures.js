@@ -144,7 +144,13 @@ function GroupFeatures({
         group_features
       </p>
       <PlayIcon
-        onClick={openSelectAlgo}
+        onClick={() => {
+          if (algo.length > 0) {
+            getFeatures();
+          } else {
+            openSelectAlgo();
+          }
+        }}
         style={{
           color: color ? "green" : "red",
           cursor: "pointer",
@@ -212,7 +218,9 @@ function GroupFeatures({
               </MenuItem>
             </Select>
           </FormControl>
-          <Button onClick={getFeatures}>Apply!</Button>
+          <div>
+            <Button onClick={handleClose}>OK</Button>
+          </div>
         </Box>
       </Modal>
       <Modal

@@ -165,7 +165,13 @@ function MsProcessing({
         find_features
       </p>
       <PlayIcon
-        onClick={openSelectAlgo}
+        onClick={() => {
+          if (algo.length > 0) {
+            getFeatures();
+          } else {
+            openSelectAlgo();
+          }
+        }}
         style={{
           color: color ? "green" : "red",
           cursor: "pointer",
@@ -236,7 +242,9 @@ function MsProcessing({
               <MenuItem value="kpic2">kpic2ß</MenuItem>
             </Select>
           </FormControl>
-          <Button onClick={getFeatures}>Apply!</Button>
+          <div>
+            <Button onClick={handleClose}>OK</Button>
+          </div>
         </Box>
       </Modal>
       <Modal
