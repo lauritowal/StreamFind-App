@@ -11,6 +11,8 @@ function ChangeParameters({
   handleClose,
   group_features,
   params,
+  algo,
+  version,
 }) {
   const [formState, setFormState] = useState(params);
   const handleChange = (paramName, value) => {
@@ -20,10 +22,11 @@ function ChangeParameters({
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const requestData = {
       parameters: formState,
+      algo: algo,
+      version: version,
     };
     if (find_features !== undefined) {
       requestData.msData = find_features;
