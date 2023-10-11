@@ -175,7 +175,6 @@ function(req) {
       setting <- gfs$find_features
     } else if (type == "group_features") {
       setting <- gfs$group_features}
-
       print("Parameters of Setting: ")
       print(setting$parameters)
 

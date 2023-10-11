@@ -3,14 +3,14 @@ import axios from "axios";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import { FormControl, Input, InputLabel, Button } from "@mui/material";
+import { FormControl, Input, InputLabel, Button, Checkbox } from "@mui/material";
 
 function ChangeParameters({
   find_features,
   group_features,
-  handleClose,
   algo,
   version,
+  handleClose,
 }) {
   const [formState, setFormState] = useState({});
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,23 @@ function ChangeParameters({
           fileNames: find_features ? find_features : group_features,
           type: find_features ? "find_features" : "group_features",
         });
-        setFormState(response.data.parameters);
+        const parsedParameters = {};
+
+      // Iterate through response.data.parameters and parse values
+      Object.keys(response.data.parameters).forEach((key) => {
+        try{
+          const parsedValue = JSON.parse(response.data.parameters[key][0]);
+          console.log(typeof parsedValue);
+          parsedParameters[key] = parsedValue;
+	      } catch {
+	        const parsedValue = response.data.parameters[key][0];
+          parsedParameters[key] = parsedValue;
+	      }
+        
+      });
+
+      console.log(parsedParameters); // This will log the parsed parameters
+      setFormState(parsedParameters);
       } catch (error) {
         console.error("Error fetching parameters:", error);
       } finally {
@@ -41,6 +57,7 @@ function ChangeParameters({
     }));
   };
 
+
   const handleSubmit = async () => {
     const requestData = {
       parameters: formState,
@@ -50,7 +67,7 @@ function ChangeParameters({
     if (find_features !== undefined) {
       requestData.msData = find_features;
       requestData.data_type = "find_features";
-    } else if (group_features !== undefined){
+    } else if (group_features !== undefined) {
       requestData.msData = group_features;
       requestData.data_type = "group_features";
     }
@@ -68,10 +85,8 @@ function ChangeParameters({
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
-
-  console.log(formState);
 
   return (
     <div>
@@ -89,22 +104,59 @@ function ChangeParameters({
       <Typography style={{ paddingBottom: "10px" }} variant="h6" component="h2">
         Parameters
       </Typography>
-      <form onSubmit={handleSubmit}>
+      <FormControl onSubmit={handleSubmit}>
         {Object.keys(formState).map((paramName) => (
-          <FormControl fullWidth key={paramName}>
-            <InputLabel htmlFor={paramName}>{paramName}</InputLabel>
-            <Input
-              id={paramName}
-              type="text"
-              value={formState[paramName]}
-              onChange={(e) => handleChange(paramName, e.target.value)}
-            />
-          </FormControl>
+          <div
+            key={paramName}
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <label
+              htmlFor={paramName}
+              style={{ flex: "1", textAlign: "right", paddingRight: "10px" }}
+            >
+              {paramName}
+            </label>
+            {paramName === 'class' ? (
+              // Display class parameter as text (non-editable)
+              <div style={{ flex: '2', textAlign: 'center' }}>{formState[paramName]}</div>
+            ) : typeof formState[paramName] === "boolean" ? (
+              // Display boolean parameters as checkboxes
+                <Checkbox
+                  id={paramName}
+                  style={{ flex: '2', textAlign: 'center' }}
+                  checked={formState[paramName]}
+                  onChange={(e) => handleChange(paramName, e.target.checked)} 
+                  />
+              
+            ) : typeof formState[paramName] === "number" ? (
+              // Display numeric parameters as input fields
+              <Input
+                type="number"
+                id={paramName}
+                style={{ flex: '2', textAlign: 'center' }}
+                value={formState[paramName]}
+                onChange={(e) => handleChange(paramName, e.target.value)}
+              />
+            ) : (
+              // Display other parameters as input fields
+              <Input
+                type="text"
+                id={paramName}
+                style={{ flex: '2', textAlign: 'center' }}
+                value={formState[paramName]}
+                onChange={(e) => handleChange(paramName, e.target.value)}
+              />
+            )}
+          </div>
         ))}
-        <Button style={{ paddingTop: "30px" }} type="submit">
+        <Button
+          style={{ paddingTop: "30px" }}
+          onClick={handleSubmit}
+          type="submit"
+        >
           Submit
         </Button>
-      </form>
+      </FormControl>
     </div>
   );
 }

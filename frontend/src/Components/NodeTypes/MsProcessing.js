@@ -31,7 +31,6 @@ function MsProcessing({
   console.log(group_features);
 
   const [findFeatures, setFindFeatures] = useState([]);
-  const [params, setParams] = useState([]);
   const [algo, setAlgo] = useState("");
   const [version, setVersion] = useState("");
   const [openObj, setOpenObj] = useState(false);
@@ -68,8 +67,9 @@ function MsProcessing({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 350,
-    height: 800,
+    width: 'auto',
+    maxHeight: 800,
+    overflowY: 'auto',
     bgcolor: "white",
     border: "2px solid white",
     borderRadius: "25px",
@@ -135,7 +135,6 @@ function MsProcessing({
       .post("http://127.0.0.1:8000/get_parameters", requestData)
       .then((response) => {
         console.log("Getting Parameters", response);
-        setParams(response.data.parameters);
         setVersion(response.data.version);
         setOpenModal(true);
       })
