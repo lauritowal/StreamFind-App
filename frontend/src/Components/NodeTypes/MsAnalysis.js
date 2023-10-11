@@ -42,8 +42,9 @@ const MsAnalysis = ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 500,
-    height: 800,
+    width: 400,
+    height: 600,
+    overflowY: "auto",
     bgcolor: "white",
     border: "2px solid white",
     borderRadius: "25px",
@@ -55,7 +56,7 @@ const MsAnalysis = ({
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 300,
-    height: 150,
+    height: 160,
     bgcolor: "white",
     border: "2px solid white",
     borderRadius: "25px",
@@ -135,9 +136,13 @@ const MsAnalysis = ({
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Select MassSpec files
             </Typography>
-            <Button onClick={openChild}>See Files</Button>
+            <div style={{ paddingTop: "10px" }}>
+              <Button onClick={openChild} variant="contained">
+                See Files
+              </Button>
+            </div>
             {selectedFiles && (
-              <div style={{ position: "absolute", top: 90 }}>
+              <div style={{ position: "absolute", top: 110 }}>
                 <h3>Selected Files:</h3>
                 <h5>
                   {fileNames.map((item, index) => (

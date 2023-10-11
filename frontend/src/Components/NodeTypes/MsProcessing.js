@@ -160,7 +160,7 @@ function MsProcessing({
           fontSize="1"
         />
       </div>
-      <p style={{ fontSize: "7px", position: "absolute", top: 45, left: -9 }}>
+      <p style={{ fontSize: "7px", position: "fixed", textAlign: "center" }}>
         find_features
       </p>
       <PlayIcon

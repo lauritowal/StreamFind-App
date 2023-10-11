@@ -147,7 +147,7 @@ function ChangeParameters({
         <CloseIcon />
       </IconButton>
       <Typography style={{ paddingBottom: "10px" }} variant="h6" component="h2">
-        Parameters
+        Settings
       </Typography>
       <Grid container>
         <FormControl onSubmit={handleSubmit}>
@@ -199,7 +199,6 @@ function ChangeParameters({
                   onChange={(e) => handleChange(paramName, e.target.value)}
                 />
               ) : (
-                // Display other parameters as input fields
                 <Input
                   type="text"
                   id={paramName}
@@ -210,13 +209,19 @@ function ChangeParameters({
               )}
             </div>
           ))}
-          <Button
-            style={{ paddingTop: "30px" }}
-            onClick={handleSubmit}
-            type="submit"
-          >
-            Submit
-          </Button>
+          <div style={{ paddingTop: "10px" }}>
+            <Button
+              onClick={handleSubmit}
+              type="submit"
+              variant="contained"
+              sx={{ mr: 2 }}
+            >
+              Update Settings
+            </Button>
+            <Button onClick={handleClose} variant="outlined">
+              Cancel
+            </Button>
+          </div>
         </FormControl>
       </Grid>
     </div>

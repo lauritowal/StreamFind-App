@@ -127,18 +127,18 @@ const SelectMzml = ({ onFolderSelect, onfileName, handleClose }) => {
           </li>
         ))}
       </div>
-      <div style={{ position: "absolute", top: 630, left: 50 }}>
-        {fileNames.length > 0 &&
-          fileNames.map((item, index) => <li key={index}>{item}</li>)}
-      </div>
-      <div style={{ position: "absolute", top: 725 }}>
+      <div style={{ position: "absolute", top: 600 }}>
         {selectedFiles.length > 0 && (
-          <Button onClick={handleSendFiles}>Select</Button>
+          <Button onClick={handleSendFiles} variant="contained">
+            Select
+          </Button>
         )}
       </div>
-      <div style={{ position: "absolute", top: 725, left: 150 }}>
+      <div style={{ position: "absolute", top: 600, left: 150 }}>
         {selectedFiles.length > 0 && (
-          <Button onClick={handleDiscard}>Discard Selection</Button>
+          <Button onClick={handleDiscard} variant="outlined">
+            Discard Selection
+          </Button>
         )}
       </div>
     </div>
