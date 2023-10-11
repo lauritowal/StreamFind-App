@@ -167,27 +167,47 @@ function(req) {
   algo <- fileNames$algorithm
   cache_key <- fileNames$fileNames
   type <- fileNames$type
+  
   if (file.exists(paste0(cache_key, ".rds"))) {
     cached_result <- readRDS(paste0(cache_key, ".rds"))
-      gfs <- cached_result$get_settings()
+    gfs <- cached_result$get_settings()
+    
     print("getting parameters...")
+    
     if (type == "find_features") {
       setting <- gfs$find_features
     } else if (type == "group_features") {
-      setting <- gfs$group_features}
-      print("Parameters of Setting: ")
-      print(setting$parameters)
-
+      setting <- gfs$group_features
+    }
+    
+    print("Setting: ")
+    print(setting)
+    
+    setting_dict <- list()  # Create an empty list for storing properties
+    
+    for (property_name in names(setting)) {
+      if (property_name != "parameters") {  # Skip the property named "parameters"
+        setting_dict[[property_name]] <- setting[[property_name]]
+      }
+      print(paste(property_name, ": ", setting[[property_name]]))
+    }
+    
+    print("There should be sth")
+    
     result <- list(
-      parameters=setting$parameters,
-      version=setting$version
+      p_settings = setting_dict,  # Store the dictionary in the result
+      parameters = setting$parameters,
+      version = setting$version
     )
+    
     return(result)
   } else {
     result <- list(
       error = "File not found!"
     )
-    return(result)}}
+    return(result)
+  }
+}
 
 
 #* Applying find_features on MsData with custom parameters

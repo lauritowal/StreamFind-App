@@ -14,6 +14,8 @@ function ChangeParameters({
 }) {
   const [formState, setFormState] = useState({});
   const [loading, setLoading] = useState(true);
+  const non_changeable = ["class", "call", "algorithm", "version", "software", 
+                          "developer", "contact", "link", "doi"];
 
   useEffect(() => {
     async function fetchParameters() {
@@ -24,6 +26,12 @@ function ChangeParameters({
           type: find_features ? "find_features" : "group_features",
         });
         const parsedParameters = {};
+
+        Object.keys(response.data.p_settings).forEach((key) => {
+            console.log("Value: ",  response.data.p_settings[key]);
+            const parsedValue = response.data.p_settings[key];
+            parsedParameters[key] = parsedValue;
+        });
 
       // Iterate through response.data.parameters and parse values
       Object.keys(response.data.parameters).forEach((key) => {
@@ -105,63 +113,58 @@ function ChangeParameters({
         Parameters
       </Typography>
       <FormControl onSubmit={handleSubmit}>
-  {Object.keys(formState).map((paramName) => (
-    <div
-      key={paramName}
-      style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
-    >
-      <label
-        htmlFor={paramName}
-        style={{
-          flex: "1",
-          textAlign: "right",
-          paddingRight: "10px",
-          marginRight: "10px", // Add spacing between label and input/checkbox
-          minWidth: "150px"
-        }}
-      >
-        {paramName}
-      </label>
-      {paramName === 'class' ? (
-        // Display class parameter as text (non-editable)
-        <div style={{ flex: "2", textAlign: "center" }}>{formState[paramName]}</div>
-      ) : typeof formState[paramName] === "boolean" ? (
-        // Display boolean parameters as checkboxes
-        <Checkbox
-          id={paramName}
-          style={{ flex: "2", textAlign: "center" }}
-          checked={formState[paramName]}
-          onChange={(e) => handleChange(paramName, e.target.checked)} 
-        />
-      ) : typeof formState[paramName] === "number" ? (
-        // Display numeric parameters as input fields
-        <Input
-          type="number"
-          id={paramName}
-          style={{ flex: "2", textAlign: "center" }}
-          value={formState[paramName]}
-          onChange={(e) => handleChange(paramName, e.target.value)}
-        />
-      ) : (
-        // Display other parameters as input fields
-        <Input
-          type="text"
-          id={paramName}
-          style={{ flex: "2", textAlign: "center" }}
-          value={formState[paramName]}
-          onChange={(e) => handleChange(paramName, e.target.value)}
-        />
-      )}
-    </div>
-  ))}
-  <Button
-    style={{ paddingTop: "30px" }}
-    onClick={handleSubmit}
-    type="submit"
-  >
-    Submit
-  </Button>
-</FormControl>
+        {Object.keys(formState).map((paramName) => (
+          <div
+            key={paramName}
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <label
+              htmlFor={paramName}
+              style={{ flex: "1", textAlign: "right", paddingRight: "10px" }}
+            >
+              {paramName}
+            </label>
+            {non_changeable.includes(paramName) ? (
+              // Display class parameter as text (non-editable)
+              <div style={{ flex: '2', textAlign: 'center' }}>{formState[paramName]}</div>
+            ) : typeof formState[paramName] === "boolean" ? (
+              // Display boolean parameters as checkboxes
+                <Checkbox
+                  id={paramName}
+                  style={{ flex: '2', textAlign: 'center' }}
+                  checked={formState[paramName]}
+                  onChange={(e) => handleChange(paramName, e.target.checked)} 
+                  />
+              
+            ) : typeof formState[paramName] === "number" ? (
+              // Display numeric parameters as input fields
+              <Input
+                type="number"
+                id={paramName}
+                style={{ flex: '2', textAlign: 'center' }}
+                value={formState[paramName]}
+                onChange={(e) => handleChange(paramName, e.target.value)}
+              />
+            ) : (
+              // Display other parameters as input fields
+              <Input
+                type="text"
+                id={paramName}
+                style={{ flex: '2', textAlign: 'center' }}
+                value={formState[paramName]}
+                onChange={(e) => handleChange(paramName, e.target.value)}
+              />
+            )}
+          </div>
+        ))}
+        <Button
+          style={{ paddingTop: "30px" }}
+          onClick={handleSubmit}
+          type="submit"
+        >
+          Submit
+        </Button>
+      </FormControl>
     </div>
   );
 }
