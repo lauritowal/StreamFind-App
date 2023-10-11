@@ -94,3 +94,15 @@ th {
 .boxText {
   margin-left: 19px;
 }
+
+.icon-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: left;
+  text-align: left;
+  padding-right: 5%;
+}
+
+.icon-container h3 {
+  margin-top: 8px;
+}
