@@ -63,7 +63,7 @@ function MzmlFileDetails({ selectedFileName, msDataObj, handleClose }) {
         variant="h9"
         component="h2"
       ></Typography>
-      <table style={{ width: "50%" }}>
+      <table style={{ width: "30%" }}>
         <tbody>
           {indices.map((index) => (
             <tr key={index}>
@@ -80,6 +80,9 @@ function MzmlFileDetails({ selectedFileName, msDataObj, handleClose }) {
           ))}
         </tbody>
       </table>
+      <div style={{ paddingTop: "150px" }}>
+        <Button onClick={handleClose}>OK</Button>
+      </div>
     </div>
   );
 }

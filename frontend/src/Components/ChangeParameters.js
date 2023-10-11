@@ -11,7 +11,7 @@ import {
   Checkbox,
   Grid,
 } from "@mui/material";
-import { alignProperty } from "@mui/material/styles/cssUtils";
+import { Link } from "react-dom";
 
 function ChangeParameters({
   find_features,
@@ -175,7 +175,25 @@ function ChangeParameters({
                     paddingBottom: "9px",
                   }}
                 >
-                  {formState[paramName]}
+                  {paramName === "contact" ? (
+                    <a
+                      href={`mailto:${formState[paramName]}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {formState[paramName]}
+                    </a>
+                  ) : ["link", "doi"].includes(paramName) ? (
+                    <a
+                      href={formState[paramName]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {formState[paramName]}
+                    </a>
+                  ) : (
+                    formState[paramName]
+                  )}
                 </div>
               ) : typeof formState[paramName] === "boolean" ? (
                 // Display boolean parameters as checkboxes
