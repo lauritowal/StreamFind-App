@@ -189,7 +189,7 @@ function(req) {
       if (property_name != "parameters") {  # Skip the property named "parameters"
         setting_dict[[property_name]] <- setting[[property_name]]
       }
-      print(paste(property_name, ": ", setting[[property_name]]))
+      #print(paste(property_name, ": ", setting[[property_name]]))
     }
     
     print("There should be sth")

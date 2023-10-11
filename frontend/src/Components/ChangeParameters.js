@@ -28,25 +28,43 @@ function ChangeParameters({
         const parsedParameters = {};
 
         Object.keys(response.data.p_settings).forEach((key) => {
-            console.log("Value: ",  response.data.p_settings[key]);
+            //console.log("Value: ",  response.data.p_settings[key]);
             const parsedValue = response.data.p_settings[key];
             parsedParameters[key] = parsedValue;
         });
 
       // Iterate through response.data.parameters and parse values
+      console.log(response.data.parameters);
       Object.keys(response.data.parameters).forEach((key) => {
-        try{
-          const parsedValue = JSON.parse(response.data.parameters[key][0]);
-          console.log(typeof parsedValue);
-          parsedParameters[key] = parsedValue;
-	      } catch {
-	        const parsedValue = response.data.parameters[key][0];
-          parsedParameters[key] = parsedValue;
-	      }
+          // console.log(key, typeof key);
+          if (key == "groupParam") {
+            Object.keys(response.data.parameters.groupParam).forEach((key) => {
+              try{
+                const parsedValue = JSON.parse(response.data.parameters.groupParam[key]);
+                console.log("Parsed", key, parsedValue);
+                parsedParameters[key] = parsedValue;
+              } catch {
+                const parsedValue = response.data.parameters.groupParam[key];
+                console.log("Not Parsed", key, parsedValue);
+                parsedParameters[key] = parsedValue;
+              }
+            }
+            )
+          } else {
+            try{
+              const parsedValue = JSON.parse(response.data.parameters[key]);
+              console.log("Parsed", key, parsedValue);
+              parsedParameters[key] = parsedValue;
+            } catch {
+              const parsedValue = response.data.parameters[key];
+              console.log("Not Parsed", key, parsedValue);
+              parsedParameters[key] = parsedValue;
+            }
+          }
         
       });
 
-      console.log(parsedParameters); // This will log the parsed parameters
+      //console.log(parsedParameters); // This will log the parsed parameters
       setFormState(parsedParameters);
       } catch (error) {
         console.error("Error fetching parameters:", error);
@@ -154,7 +172,9 @@ function ChangeParameters({
                 value={formState[paramName]}
                 onChange={(e) => handleChange(paramName, e.target.value)}
               />
-            )}
+            ) 
+            
+            }
           </div>
         ))}
         <Button
