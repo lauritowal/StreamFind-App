@@ -67,7 +67,7 @@ function GroupFeatures({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 450,
+    width: 600,
     maxHeight: 900,
     overflowY: "auto",
     bgcolor: "white",

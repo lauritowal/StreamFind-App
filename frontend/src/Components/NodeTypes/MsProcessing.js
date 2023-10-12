@@ -67,7 +67,7 @@ function MsProcessing({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 500,
+    width: 600,
     maxHeight: 1050,
     overflowY: "auto",
     bgcolor: "white",

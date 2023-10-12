@@ -28,7 +28,7 @@ export default () => {
               <InsertdriveIcon
                 style={{
                   fontSize: "6em",
-                  color: "green",
+                  color: "grey",
                   cursor: "pointer",
                 }}
               />

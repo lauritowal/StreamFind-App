@@ -101,7 +101,11 @@ const MsAnalysis = ({
   return (
     <div>
       <InsertDriveIcon
-        style={{ fontSize: "3em", color: "green", cursor: "pointer" }}
+        style={{
+          fontSize: "3em",
+          color: fileNames.length > 0 ? "#1976d2" : "grey",
+          cursor: "pointer",
+        }}
       />
       <div
         style={{

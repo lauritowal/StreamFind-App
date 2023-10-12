@@ -114,7 +114,7 @@ const SelectMzml = ({ onFolderSelect, onfileName, handleClose }) => {
           >
             {item.endsWith(".mzML") ? (
               <InsertDriveFileIcon
-                style={{ color: "green" }}
+                style={{ color: "#1976d2" }}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleFolderClick(item);
