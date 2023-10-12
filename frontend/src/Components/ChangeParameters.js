@@ -149,99 +149,107 @@ function ChangeParameters({
       <Typography style={{ paddingBottom: "10px" }} variant="h6" component="h2">
         Settings
       </Typography>
-      <Grid container>
-        <FormControl onSubmit={handleSubmit}>
-          {Object.keys(formState).map((paramName) => (
-            <div
-              key={paramName}
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <label
-                htmlFor={paramName}
-                style={{
-                  flex: "1",
-                  textAlign: "left",
-                  paddingRight: "10px",
-                }}
-              >
-                {paramName}
-              </label>
-              {non_changeable.includes(paramName) ? (
-                // Display class parameter as text (non-editable)
-                <div
-                  style={{
-                    flex: "3",
-                    textAlign: "left",
-                    paddingBottom: "9px",
-                  }}
+      {non_changeable.map((paramName) => (
+        <Grid container style={{ paddingRight: "50px", paddingBottom: "10px" }}>
+          <Grid item md={6}>
+            <div key={paramName}>
+              <label htmlFor={paramName}>{paramName}</label>
+            </div>
+          </Grid>
+          <Grid item md={6}>
+            <div>
+              {paramName === "contact" ? (
+                <a
+                  href={`mailto:${formState[paramName]}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  {paramName === "contact" ? (
-                    <a
-                      href={`mailto:${formState[paramName]}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {formState[paramName]}
-                    </a>
-                  ) : ["link", "doi"].includes(paramName) ? (
-                    <a
-                      href={formState[paramName]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {formState[paramName]}
-                    </a>
-                  ) : (
-                    formState[paramName]
-                  )}
-                </div>
-              ) : typeof formState[paramName] === "boolean" ? (
-                // Display boolean parameters as checkboxes
-                <Checkbox
-                  id={paramName}
-                  style={{
-                    flex: "2",
-                    alignItems: "left",
-                    justifyContent: "space-between",
-                  }}
-                  checked={formState[paramName]}
-                  onChange={(e) => handleChange(paramName, e.target.checked)}
-                />
-              ) : typeof formState[paramName] === "number" ? (
-                // Display numeric parameters as input fields
-                <Input
-                  type="number"
-                  id={paramName}
-                  style={{ flex: "2", textAlign: "center" }}
-                  value={formState[paramName]}
-                  onChange={(e) => handleChange(paramName, e.target.value)}
-                />
+                  {formState[paramName]}
+                </a>
+              ) : ["link", "doi"].includes(paramName) ? (
+                <a
+                  href={formState[paramName]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {formState[paramName]}
+                </a>
               ) : (
-                <Input
-                  type="text"
-                  id={paramName}
-                  style={{ flex: "2", textAlign: "center" }}
-                  value={formState[paramName]}
-                  onChange={(e) => handleChange(paramName, e.target.value)}
-                />
+                formState[paramName]
               )}
             </div>
-          ))}
-          <div style={{ paddingTop: "10px" }}>
-            <Button
-              onClick={handleSubmit}
-              type="submit"
-              variant="contained"
-              sx={{ mr: 2 }}
-            >
-              Update Settings
-            </Button>
-            <Button onClick={handleClose} variant="outlined">
-              Cancel
-            </Button>
-          </div>
-        </FormControl>
-      </Grid>
+          </Grid>
+        </Grid>
+      ))}
+      {Object.keys(formState)
+        .filter((paramName) => !non_changeable.includes(paramName))
+        .map((paramName) => (
+          <Grid
+            container
+            style={{
+              paddingRight: "40px",
+              paddingBottom: "10px",
+              justifyContent: "flex-start",
+            }}
+            spacing={1}
+          >
+            <Grid item md={6}>
+              <div key={paramName}>
+                <label htmlFor={paramName}>{paramName}</label>
+              </div>
+            </Grid>
+            <FormControl onSubmit={handleSubmit}>
+              <Grid item md={6}>
+                <div>
+                  {typeof formState[paramName] === "boolean" ? (
+                    <div style={{ marginLeft: "-10px" }}>
+                      <Checkbox
+                        id={paramName}
+                        checked={formState[paramName]}
+                        onChange={(e) =>
+                          handleChange(paramName, e.target.checked)
+                        }
+                      />
+                    </div>
+                  ) : typeof formState[paramName] === "number" ? (
+                    <Input
+                      type="number"
+                      id={paramName}
+                      value={formState[paramName]}
+                      onChange={(e) =>
+                        handleChange(paramName, parseFloat(e.target.value))
+                      }
+                    />
+                  ) : (
+                    <div>
+                      <Input
+                        type="text"
+                        id={paramName}
+                        value={formState[paramName]}
+                        onChange={(e) =>
+                          handleChange(paramName, e.target.value)
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              </Grid>
+            </FormControl>
+          </Grid>
+        ))}
+      <div style={{ paddingTop: "10px" }}>
+        <Button
+          onClick={handleSubmit}
+          type="submit"
+          variant="contained"
+          sx={{ mr: 2 }}
+        >
+          Update Settings
+        </Button>
+        <Button onClick={handleClose} variant="outlined">
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 }
