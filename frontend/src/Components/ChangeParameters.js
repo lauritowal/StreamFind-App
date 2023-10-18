@@ -151,18 +151,19 @@ function ChangeParameters({
       </Typography>
       {non_changeable.map((paramName) => (
         <Grid container style={{ paddingRight: "50px", paddingBottom: "10px" }}>
-          <Grid item md={6}>
+          <Grid item md={4}>
             <div key={paramName}>
               <label htmlFor={paramName}>{paramName}</label>
             </div>
           </Grid>
-          <Grid item md={6}>
+          <Grid item md={8}>
             <div>
               {paramName === "contact" ? (
                 <a
                   href={`mailto:${formState[paramName]}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  style={{ color: "#1976d2" }}
                 >
                   {formState[paramName]}
                 </a>
@@ -171,6 +172,7 @@ function ChangeParameters({
                   href={formState[paramName]}
                   target="_blank"
                   rel="noopener noreferrer"
+                  style={{ color: "#1976d2" }}
                 >
                   {formState[paramName]}
                 </a>
@@ -193,13 +195,13 @@ function ChangeParameters({
             }}
             spacing={1}
           >
-            <Grid item md={6}>
+            <Grid item md={4}>
               <div key={paramName}>
                 <label htmlFor={paramName}>{paramName}</label>
               </div>
             </Grid>
             <FormControl onSubmit={handleSubmit}>
-              <Grid item md={6}>
+              <Grid item md={8}>
                 <div>
                   {typeof formState[paramName] === "boolean" ? (
                     <div style={{ marginLeft: "-10px" }}>

@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { Button } from "@mui/material";
 
 const handleStyle = { left: 10 };
 
@@ -59,7 +60,7 @@ function MsData({
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 350,
-    height: 50,
+    height: 85,
     bgcolor: "white",
     border: "2px solid white",
     borderRadius: "25px",
@@ -180,6 +181,13 @@ function MsData({
             <Typography id="modal-modal-title" variant="h9" component="h2">
               MassSpec data object created!
             </Typography>
+            <Button
+              style={{ position: "absolute", right: 300, top: 110 }}
+              onClick={handleClose}
+              variant="contained"
+            >
+              OK
+            </Button>
           </div>
         </Box>
       </Modal>

@@ -57,18 +57,6 @@ body {
   overflow: hidden;
 }
 
-.upper_div {
-  display: flex;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-  background-color: rgb(213, 213, 213);
-  margin-right: 47%;
-  margin-top: 2%;
-  margin-bottom: 3%;
-  border-radius: 20px;
-}
-
 .table-container {
   max-width: 1450px;
   position: absolute;

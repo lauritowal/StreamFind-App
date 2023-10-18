@@ -121,7 +121,7 @@ const SelectMzml = ({ onFolderSelect, onfileName, handleClose }) => {
                 }}
               />
             ) : (
-              <FolderIcon fontSize="small" style={{ color: "teal" }} />
+              <FolderIcon fontSize="small" style={{ color: "grey" }} />
             )}
             {item}
           </li>

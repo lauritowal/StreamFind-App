@@ -15,9 +15,7 @@ export default () => {
   return (
     <div className="sidebar">
       <div className="demo_box">
-        <div className="upper_div">
-          <h2 className="boxText">Input</h2>
-        </div>
+        <h2 className="boxText">Input</h2>
         <div
           onDragStart={(event) => onDragStart(event, "MsAnalysisNode")}
           draggable
@@ -38,9 +36,7 @@ export default () => {
         </div>
       </div>
       <div className="demo_box">
-        <div className="upper_div">
-          <h2 className="boxText">Engines</h2>
-        </div>
+        <h2 className="boxText">Engines</h2>
         <div
           onDragStart={(event) => onDragStart(event, "MsDataNode")}
           draggable
@@ -61,9 +57,7 @@ export default () => {
         </div>
       </div>
       <div className="demo_box">
-        <div className="upper_div">
-          <h2 className="boxText">Module Processing</h2>
-        </div>
+        <h2 className="boxText">Module Processing</h2>
         <div
           onDragStart={(event) => onDragStart(event, "FindFeaturesNode")}
           draggable
@@ -87,6 +81,7 @@ export default () => {
                 style={{
                   fontSize: "6em",
                   cursor: "pointer",
+                  color: "#1976d2",
                 }}
               />
             </Grid>

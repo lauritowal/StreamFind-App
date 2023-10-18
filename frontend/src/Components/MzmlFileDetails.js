@@ -81,7 +81,9 @@ function MzmlFileDetails({ selectedFileName, msDataObj, handleClose }) {
         </tbody>
       </table>
       <div style={{ paddingTop: "150px" }}>
-        <Button onClick={handleClose}>OK</Button>
+        <Button onClick={handleClose} variant="contained">
+          OK
+        </Button>
       </div>
     </div>
   );

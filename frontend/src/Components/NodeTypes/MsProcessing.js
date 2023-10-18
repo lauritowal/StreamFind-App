@@ -44,7 +44,7 @@ function MsProcessing({
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 350,
-    height: 100,
+    height: 110,
     bgcolor: "white",
     border: "2px solid white",
     borderRadius: "25px",
@@ -242,7 +242,9 @@ function MsProcessing({
             </Select>
           </FormControl>
           <div>
-            <Button onClick={handleClose}>OK</Button>
+            <Button onClick={handleClose} variant="contained">
+              OK
+            </Button>
           </div>
         </Box>
       </Modal>
@@ -271,8 +273,9 @@ function MsProcessing({
             </Typography>
           </div>
           <Button
-            style={{ position: "absolute", right: 50, top: 120 }}
+            style={{ position: "absolute", right: 300, top: 110 }}
             onClick={handleClose}
+            variant="contained"
           >
             OK
           </Button>

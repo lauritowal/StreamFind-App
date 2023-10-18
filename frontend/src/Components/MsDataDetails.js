@@ -130,8 +130,9 @@ function MsDataDetails({ msDataObj, handleClose }) {
         style={{
           position: "absolute",
           top: 800,
-          left: 1400,
+          left: 50,
         }}
+        variant="contained"
       >
         OK
       </Button>
