@@ -11,23 +11,23 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import "./index.css";
 import Sidebar from "./Components/Sidebar";
-import MsData from "./Components/NodeTypes/MsData";
-import MsAnalysis from "./Components/NodeTypes/MsAnalysis";
-import MsProcessing from "./Components/NodeTypes/MsProcessing";
+import MassSpecData from "./Components/NodeTypes/MassSpecData";
+import MassSpecFiles from "./Components/NodeTypes/MassSpecFiles";
+import FindFeatures from "./Components/NodeTypes/FindFeatures";
 import { Button } from "@mui/material";
 import GroupFeatures from "./Components/NodeTypes/GroupFeatures";
 
 const flowKey = "example-flow";
 const initialNodes = [];
 const nodeTypes = {
-  MsDataNode: MsData,
-  MsAnalysisNode: MsAnalysis,
-  FindFeaturesNode: MsProcessing,
-  GroupFeaturesNode: GroupFeatures,
+  MassSpecData: MassSpecData,
+  MassSpecFiles: MassSpecFiles,
+  FindFeatures: FindFeatures,
+  GroupFeatures: GroupFeatures,
 };
 
 let id = 0;
-const getId = (type) => `${type}${id++}`;
+const getNodeId = (type) => `${type}${id++}`;
 
 const App = () => {
   const reactFlowWrapper = useRef(null);
@@ -36,6 +36,7 @@ const App = () => {
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const { setViewport } = useReactFlow();
 
+  //node gets id of connected node
   const onConnect = useCallback(
     (params) => {
       const newEdge = addEdge(params, edges);
@@ -74,13 +75,13 @@ const App = () => {
     [edges, nodes]
   );
 
+  //dragging nodes to canvas
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-  console.log(nodes);
-
+  //droping nodes to canvas
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
@@ -96,8 +97,9 @@ const App = () => {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
+
       const newNode = {
-        id: getId(type),
+        id: getNodeId(type),
         type: type,
         position,
         data: {
@@ -122,6 +124,7 @@ const App = () => {
     }
   }, [reactFlowInstance]);
 
+  //always restore saved canvas
   useEffect(() => {
     const restoreFlow = async () => {
       const flow = JSON.parse(localStorage.getItem(flowKey));
@@ -132,7 +135,6 @@ const App = () => {
         setViewport({ x, y, zoom });
       }
     };
-
     restoreFlow();
   }, [setNodes, setViewport]);
 
@@ -142,7 +144,6 @@ const App = () => {
       setEdges([]);
       setViewport({});
     };
-
     resetFlow();
   }, [setNodes, setViewport]);
 

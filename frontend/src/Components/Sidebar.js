@@ -14,10 +14,10 @@ export default () => {
 
   return (
     <div className="sidebar">
-      <div className="demo_box">
-        <h2 className="boxText">Input</h2>
+      <div className="nodeCategory">
+        <h2 className="nodeCategoryTitle">Input</h2>
         <div
-          onDragStart={(event) => onDragStart(event, "MsAnalysisNode")}
+          onDragStart={(event) => onDragStart(event, "MassSpecFiles")}
           draggable
           className="icon-container"
         >
@@ -35,10 +35,10 @@ export default () => {
           </Grid>
         </div>
       </div>
-      <div className="demo_box">
-        <h2 className="boxText">Engines</h2>
+      <div className="nodeCategory">
+        <h2 className="nodeCategoryTitle">Engines</h2>
         <div
-          onDragStart={(event) => onDragStart(event, "MsDataNode")}
+          onDragStart={(event) => onDragStart(event, "MassSpecData")}
           draggable
           className="icon-container"
         >
@@ -56,10 +56,10 @@ export default () => {
           </Grid>
         </div>
       </div>
-      <div className="demo_box">
-        <h2 className="boxText">Module Processing</h2>
+      <div className="nodeCategory">
+        <h2 className="nodeCategoryTitle">Module Processing</h2>
         <div
-          onDragStart={(event) => onDragStart(event, "FindFeaturesNode")}
+          onDragStart={(event) => onDragStart(event, "FindFeatures")}
           draggable
           className="icon-container"
         >
@@ -71,7 +71,7 @@ export default () => {
           </Grid>
         </div>
         <div
-          onDragStart={(event) => onDragStart(event, "GroupFeaturesNode")}
+          onDragStart={(event) => onDragStart(event, "GroupFeatures")}
           draggable
           className="icon-container"
         >

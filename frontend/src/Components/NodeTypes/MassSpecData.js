@@ -8,7 +8,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import "../../index.css";
 import MsDataDetails from "../MsDataDetails";
-import MsProcessing from "./MsProcessing";
+import FindFeatures from "./FindFeatures";
 import Typography from "@mui/material/Typography";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import IconButton from "@mui/material/IconButton";
@@ -17,7 +17,7 @@ import { Button } from "@mui/material";
 
 const handleStyle = { left: 10 };
 
-function MsData({
+function MassSpecData({
   id,
   data: { label, edges, find_features, inputFiles, setNodes },
   isConnectable,
@@ -26,12 +26,10 @@ function MsData({
     console.log(evt.target.value);
   }, []);
 
-  console.log(inputFiles);
-  console.log(edges);
   const [openModal, setOpenModal] = useState(false);
-  const [openObj, setOpenObj] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [color, setColor] = useState(false);
-  const [msDataObj, setMsDataObj] = useState([]);
+  const [msDataDetails, setMsDataDetails] = useState([]);
 
   const handleOpen = () => {
     setOpenModal(true);
@@ -39,10 +37,10 @@ function MsData({
 
   const handleClose = () => {
     setOpenModal(false);
-    setOpenObj(false);
+    setOpenDialog(false);
   };
 
-  const style = {
+  const ModalStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -54,7 +52,7 @@ function MsData({
     borderRadius: "25px",
     p: 5,
   };
-  const style2 = {
+  const DialogStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -72,8 +70,8 @@ function MsData({
       .post("http://127.0.0.1:8000/msdata", inputFiles)
       .then((response) => {
         console.log("MsData Object created!", response);
-        setMsDataObj(response.data);
-        setOpenObj(true);
+        setMsDataDetails(response.data);
+        setOpenDialog(true);
         setColor(true);
       })
       .catch((error) => {
@@ -84,7 +82,7 @@ function MsData({
   const showDetails = () => {
     setOpenModal(true);
     console.log("Details!");
-    console.log(msDataObj);
+    console.log(msDataDetails);
   };
 
   useEffect(() => {
@@ -96,7 +94,7 @@ function MsData({
               ...node,
               data: {
                 ...node.data,
-                find_features: msDataObj,
+                find_features: msDataDetails,
               },
             };
           }
@@ -104,7 +102,7 @@ function MsData({
         })
       );
     }
-  }, [msDataObj, find_features, edges, id, setNodes]);
+  }, [msDataDetails, find_features, edges, id, setNodes]);
 
   return (
     <div>
@@ -159,12 +157,12 @@ function MsData({
         }}
       />
       <Modal
-        open={openObj}
+        open={openDialog}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style2}>
+        <Box sx={DialogStyle}>
           <IconButton
             onClick={handleClose}
             aria-label="close"
@@ -197,12 +195,15 @@ function MsData({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <MsDataDetails msDataObj={msDataObj} handleClose={handleClose} />
+        <Box sx={ModalStyle}>
+          <MsDataDetails
+            msDataDetails={msDataDetails}
+            handleClose={handleClose}
+          />
         </Box>
       </Modal>
     </div>
   );
 }
 
-export default MsData;
+export default MassSpecData;

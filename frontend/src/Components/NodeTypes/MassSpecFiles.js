@@ -9,11 +9,10 @@ import Button from "@mui/material/Button";
 import SelectMzml from "../SelectMzml";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import MsData from "./MsData";
 
 const handleStyle = { left: 10 };
 
-const MsAnalysis = ({
+const MassSpecFiles = ({
   id,
   data: { label, edges, inputFiles, setNodes },
   isConnectable,
@@ -22,11 +21,6 @@ const MsAnalysis = ({
   const [stepName, setStepName] = useState("");
   const [fileNames, setfileNames] = useState([]);
 
-  console.log(id);
-  console.log(edges);
-  console.log(label);
-  console.log(inputFiles);
-
   const handleOpen = () => {
     setStepName("openModal");
   };
@@ -34,23 +28,25 @@ const MsAnalysis = ({
   const handleClose = () => {
     setStepName("");
   };
-  const handleCloseChild = () => {
+
+  const openFileExplorer = () => {
+    setSelectedFiles("");
+    setStepName("fileExplorerOpen");
+  };
+
+  const closeFileExplorer = () => {
     setStepName("openModal");
   };
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    height: 600,
-    overflowY: "auto",
-    bgcolor: "white",
-    border: "2px solid white",
-    borderRadius: "25px",
-    p: 5,
+
+  const handleFolderSelect = (file) => {
+    setSelectedFiles(file);
   };
-  const style1 = {
+
+  const handlefileName = (file) => {
+    setfileNames(file);
+  };
+
+  const ModalStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -62,12 +58,18 @@ const MsAnalysis = ({
     borderRadius: "25px",
     p: 5,
   };
-
-  const handleFolderSelect = (file) => {
-    setSelectedFiles(file);
-  };
-  const handlefileName = (file) => {
-    setfileNames(file);
+  const FileExplorerStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    height: 600,
+    overflowY: "auto",
+    bgcolor: "white",
+    border: "2px solid white",
+    borderRadius: "25px",
+    p: 5,
   };
 
   useEffect(() => {
@@ -88,11 +90,6 @@ const MsAnalysis = ({
       );
     }
   }, [selectedFiles, inputFiles, edges, id, setNodes]);
-
-  const openChild = () => {
-    setSelectedFiles("");
-    setStepName("childOpen");
-  };
 
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
@@ -125,7 +122,7 @@ const MsAnalysis = ({
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style1}>
+          <Box sx={ModalStyle}>
             <IconButton
               aria-label="close"
               onClick={handleClose}
@@ -141,7 +138,7 @@ const MsAnalysis = ({
               Select MassSpec files
             </Typography>
             <div style={{ paddingTop: "10px" }}>
-              <Button onClick={openChild} variant="contained">
+              <Button onClick={openFileExplorer} variant="contained">
                 See Files
               </Button>
             </div>
@@ -159,12 +156,12 @@ const MsAnalysis = ({
         </Modal>
 
         <Modal
-          open={stepName === "childOpen"}
+          open={stepName === "fileExplorerOpen"}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style1}>
-            <Box sx={style}>
+          <Box sx={ModalStyle}>
+            <Box sx={FileExplorerStyle}>
               {" "}
               <IconButton
                 aria-label="close"
@@ -180,7 +177,7 @@ const MsAnalysis = ({
               <SelectMzml
                 onFolderSelect={handleFolderSelect}
                 onfileName={handlefileName}
-                handleClose={handleCloseChild}
+                handleClose={closeFileExplorer}
               />
             </Box>
           </Box>
@@ -201,4 +198,4 @@ const MsAnalysis = ({
   );
 };
 
-export default MsAnalysis;
+export default MassSpecFiles;

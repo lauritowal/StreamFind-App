@@ -18,7 +18,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const handleStyle = { left: 10 };
 
-function MsProcessing({
+function FindFeatures({
   type,
   id,
   data: { label, edges, find_features, group_features, setNodes },
@@ -300,4 +300,4 @@ function MsProcessing({
   );
 }
 
-export default MsProcessing;
+export default FindFeatures;
