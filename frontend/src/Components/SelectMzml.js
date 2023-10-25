@@ -14,18 +14,6 @@ const SelectMzml = ({ onFolderSelect, onfileName, handleClose }) => {
   const [fileNames, setFileNames] = useState([]);
   const [clickedFiles, setClickedFiles] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/files_project")
-      .then((response) => {
-        console.log(response);
-        setFolders(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   const handleSendFiles = () => {
     onFolderSelect(selectedFiles);
     onfileName(fileNames);
@@ -38,13 +26,23 @@ const SelectMzml = ({ onFolderSelect, onfileName, handleClose }) => {
     setClickedFiles([]);
   };
 
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/files_project")
+      .then((response) => {
+        console.log(response);
+        setFolders(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const handleFolderClick = (item) => {
     if (item.endsWith(".mzML")) {
       const fullPath = selectedFolder + "/" + item;
       setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, fullPath]);
       setFileNames((prevFileNames) => [...prevFileNames, item]);
-
-      // Toggle background color only for .mzML files
       setClickedFiles((prevClickedFiles) =>
         prevClickedFiles.includes(item)
           ? prevClickedFiles.filter((file) => file !== item)

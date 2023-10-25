@@ -27,18 +27,26 @@ function FindFeatures({
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
-  console.log(find_features);
-  console.log(group_features);
 
   const [findFeatures, setFindFeatures] = useState([]);
   const [algo, setAlgo] = useState("");
   const [version, setVersion] = useState("");
-  const [openObj, setOpenObj] = useState(false);
-  const [selectAlgo, setSelectAlgo] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [selectAlgo, setSelectAlgo] = useState(false);
   const [color, setColor] = useState(false);
 
-  const style = {
+  const handleClose = () => {
+    setOpenModal(false);
+    setOpenDialog(false);
+    setSelectAlgo(false);
+  };
+
+  const openSelectAlgo = () => {
+    setSelectAlgo(true);
+  };
+
+  const DialogStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -50,19 +58,8 @@ function FindFeatures({
     borderRadius: "25px",
     p: 5,
   };
-  const style1 = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 350,
-    height: 400,
-    bgcolor: "white",
-    border: "2px solid white",
-    borderRadius: "25px",
-    p: 5,
-  };
-  const style2 = {
+
+  const ParamStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -76,16 +73,6 @@ function FindFeatures({
     p: 5,
   };
 
-  const handleClose = () => {
-    setOpenModal(false);
-    setOpenObj(false);
-    setSelectAlgo(false);
-  };
-
-  const openSelectAlgo = () => {
-    setSelectAlgo(true);
-  };
-
   const getFeatures = () => {
     const requestData = {
       fileNames: find_features,
@@ -97,7 +84,7 @@ function FindFeatures({
         console.log("Getting features", response);
         console.log(response.data);
         setFindFeatures(response.data.file_name);
-        setOpenObj(true);
+        setOpenDialog(true);
         setColor(true);
       })
       .catch((error) => {
@@ -209,7 +196,7 @@ function FindFeatures({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={DialogStyle}>
           <IconButton
             onClick={handleClose}
             aria-label="close"
@@ -249,12 +236,12 @@ function FindFeatures({
         </Box>
       </Modal>
       <Modal
-        open={openObj}
+        open={openDialog}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={DialogStyle}>
           <IconButton
             onClick={handleClose}
             aria-label="close"
@@ -287,7 +274,7 @@ function FindFeatures({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style2}>
+        <Box sx={ParamStyle}>
           <ChangeParameters
             find_features={find_features}
             handleClose={handleClose}

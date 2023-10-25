@@ -8,26 +8,13 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Plot from "react-plotly.js";
 
-function MzmlFileDetails({ selectedFileName, msDataObj, handleClose }) {
+function MzmlFileDetails({ selectedMzml, msDataDetails, handleClose }) {
   const [analyses, setAnalyses] = useState([]);
-
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 1500,
-    height: 700,
-    bgcolor: "white",
-    border: "2px solid white",
-    borderRadius: "25px",
-    p: 5,
-  };
 
   useEffect(() => {
     const requestData = {
-      fileName: selectedFileName,
-      msdata: msDataObj,
+      fileName: selectedMzml,
+      msdata: msDataDetails,
     };
     axios
       .post("http://127.0.0.1:8000/mzmldetails", requestData)
@@ -39,7 +26,7 @@ function MzmlFileDetails({ selectedFileName, msDataObj, handleClose }) {
       .catch((error) => {
         console.error("Error sending files:", error);
       });
-  }, [msDataObj, selectedFileName]);
+  }, [msDataDetails, selectedMzml]);
   const indices = [0, 1, 2, 4, 5, 7, 8, 9, 15, 21, 14, 23];
 
   return (
@@ -56,7 +43,7 @@ function MzmlFileDetails({ selectedFileName, msDataObj, handleClose }) {
         <CloseIcon />
       </IconButton>
       <Typography id="modal-modal-title" variant="h9" component="h2">
-        {selectedFileName}
+        {selectedMzml}
       </Typography>
       <Typography
         id="modal-modal-title"

@@ -27,18 +27,26 @@ function GroupFeatures({
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
-  console.log(group_features);
 
   const [groupFeatures, setGroupFeatures] = useState([]);
-  const [params, setParams] = useState([]);
   const [algo, setAlgo] = useState("");
   const [version, setVersion] = useState("");
-  const [openObj, setOpenObj] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [selectAlgo, setSelectAlgo] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [color, setColor] = useState(false);
 
-  const style = {
+  const handleClose = () => {
+    setOpenModal(false);
+    setOpenDialog(false);
+    setSelectAlgo(false);
+  };
+
+  const openSelectAlgo = () => {
+    setSelectAlgo(true);
+  };
+
+  const DialogStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -50,19 +58,8 @@ function GroupFeatures({
     borderRadius: "25px",
     p: 5,
   };
-  const style1 = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 350,
-    height: 400,
-    bgcolor: "white",
-    border: "2px solid white",
-    borderRadius: "25px",
-    p: 5,
-  };
-  const style2 = {
+
+  const ParamStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -76,16 +73,6 @@ function GroupFeatures({
     p: 5,
   };
 
-  const handleClose = () => {
-    setOpenModal(false);
-    setOpenObj(false);
-    setSelectAlgo(false);
-  };
-
-  const openSelectAlgo = () => {
-    setSelectAlgo(true);
-  };
-
   const getFeatures = () => {
     const requestData = {
       fileNames: group_features,
@@ -97,7 +84,7 @@ function GroupFeatures({
         console.log("Getting group features", response);
         console.log(response.data);
         setGroupFeatures(response.data.file_name);
-        setOpenObj(true);
+        setOpenDialog(true);
         setColor(true);
       })
       .catch((error) => {
@@ -115,7 +102,6 @@ function GroupFeatures({
       .post("http://127.0.0.1:8000/get_parameters", requestData)
       .then((response) => {
         console.log("Getting Parameters", response);
-        setParams(response.data.parameters.groupParam);
         setVersion(response.data.version);
         setOpenModal(true);
       })
@@ -198,7 +184,7 @@ function GroupFeatures({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={DialogStyle}>
           <IconButton
             onClick={handleClose}
             aria-label="close"
@@ -235,12 +221,12 @@ function GroupFeatures({
         </Box>
       </Modal>
       <Modal
-        open={openObj}
+        open={openDialog}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={DialogStyle}>
           <IconButton
             onClick={handleClose}
             aria-label="close"
@@ -277,7 +263,7 @@ function GroupFeatures({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style2}>
+        <Box sx={ParamStyle}>
           <ChangeParameters
             handleClose={handleClose}
             group_features={group_features}

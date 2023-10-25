@@ -9,21 +9,21 @@ import CloseIcon from "@mui/icons-material/Close";
 import Plot from "react-plotly.js";
 import MzmlFileDetails from "./MzmlFileDetails";
 
-function MsDataDetails({ msDataObj, handleClose }) {
+function MsDataDetails({ msDataDetails, handleClose }) {
   const [stepName, setStepName] = useState("");
   const [overview, setOverview] = useState([]);
   const [analyses_number, setAnalyses_number] = useState([]);
   const [analyses, setAnalyses] = useState([]);
   const [plot, setPlot] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const [selectedFileName, setSelectedFileName] = useState("");
+  const [selectedMzml, setSelectedMzml] = useState("");
 
   const handleOpen = (fileName) => {
-    setSelectedFileName(fileName);
+    setSelectedMzml(fileName);
     setOpenModal(true);
   };
 
-  const style = {
+  const MzmlStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -36,22 +36,9 @@ function MsDataDetails({ msDataObj, handleClose }) {
     p: 5,
   };
 
-  const style2 = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 350,
-    height: 50,
-    bgcolor: "white",
-    border: "2px solid white",
-    borderRadius: "25px",
-    p: 5,
-  };
-
   useEffect(() => {
     axios
-      .post("http://127.0.0.1:8000/msdatadetails", msDataObj)
+      .post("http://127.0.0.1:8000/msdatadetails", msDataDetails)
       .then((response) => {
         console.log("Getting Details!", response);
         setOverview(response.data.overview);
@@ -64,7 +51,7 @@ function MsDataDetails({ msDataObj, handleClose }) {
       .catch((error) => {
         console.error("Error sending files:", error);
       });
-  }, [msDataObj]);
+  }, [msDataDetails]);
 
   return (
     <div>
@@ -142,10 +129,10 @@ function MsDataDetails({ msDataObj, handleClose }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={MzmlStyle}>
           <MzmlFileDetails
-            selectedFileName={selectedFileName}
-            msDataObj={msDataObj}
+            selectedMzml={selectedMzml}
+            msDataDetails={msDataDetails}
             handleClose={handleClose}
           />
         </Box>
