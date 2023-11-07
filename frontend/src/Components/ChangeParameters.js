@@ -1,18 +1,101 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import { FormControl, Grid } from "@mui/material";
-import { Button, Input } from "@mui/material";
+import {
+  FormControl,
+  Input,
+  InputLabel,
+  Button,
+  Checkbox,
+  Grid,
+} from "@mui/material";
+import { Link } from "react-dom";
 
 function ChangeParameters({
   find_features,
-  handleClose,
   group_features,
-  params,
+  algo,
+  version,
+  handleClose,
 }) {
-  const [formState, setFormState] = useState(params);
+  const [formState, setFormState] = useState({});
+  const [loading, setLoading] = useState(true);
+  const non_changeable = [
+    "class",
+    "call",
+    "algorithm",
+    "version",
+    "software",
+    "developer",
+    "contact",
+    "link",
+    "doi",
+  ];
+
+  useEffect(() => {
+    async function fetchParameters() {
+      try {
+        const response = await axios.post(
+          "http://127.0.0.1:8000/get_parameters",
+          {
+            algorithm: algo,
+            fileNames: find_features ? find_features : group_features,
+            type: find_features ? "find_features" : "group_features",
+          }
+        );
+        const parsedParameters = {};
+
+        Object.keys(response.data.p_settings).forEach((key) => {
+          //console.log("Value: ",  response.data.p_settings[key]);
+          const parsedValue = response.data.p_settings[key];
+          parsedParameters[key] = parsedValue;
+        });
+
+        // Iterate through response.data.parameters and parse values
+        console.log(response.data.parameters);
+        Object.keys(response.data.parameters).forEach((key) => {
+          // console.log(key, typeof key);
+          if (key == "groupParam") {
+            Object.keys(response.data.parameters.groupParam).forEach((key) => {
+              try {
+                const parsedValue = JSON.parse(
+                  response.data.parameters.groupParam[key]
+                );
+                console.log("Parsed", key, parsedValue);
+                parsedParameters[key] = parsedValue;
+              } catch {
+                const parsedValue = response.data.parameters.groupParam[key];
+                console.log("Not Parsed", key, parsedValue);
+                parsedParameters[key] = parsedValue;
+              }
+            });
+          } else {
+            try {
+              const parsedValue = JSON.parse(response.data.parameters[key]);
+              console.log("Parsed", key, parsedValue);
+              parsedParameters[key] = parsedValue;
+            } catch {
+              const parsedValue = response.data.parameters[key];
+              console.log("Not Parsed", key, parsedValue);
+              parsedParameters[key] = parsedValue;
+            }
+          }
+        });
+
+        //console.log(parsedParameters); // This will log the parsed parameters
+        setFormState(parsedParameters);
+      } catch (error) {
+        console.error("Error fetching parameters:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchParameters();
+  }, [find_features, algo]);
+
   const handleChange = (paramName, value) => {
     setFormState((prevState) => ({
       ...prevState,
@@ -20,10 +103,11 @@ function ChangeParameters({
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const requestData = {
       parameters: formState,
+      algo: algo,
+      version: version,
     };
     if (find_features !== undefined) {
       requestData.msData = find_features;
@@ -45,6 +129,10 @@ function ChangeParameters({
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <IconButton
@@ -59,37 +147,111 @@ function ChangeParameters({
         <CloseIcon />
       </IconButton>
       <Typography style={{ paddingBottom: "10px" }} variant="h6" component="h2">
-        Parameters
+        Settings
       </Typography>
-      <FormControl onSubmit={handleSubmit}>
-        {Object.keys(formState).map((paramName) => (
-          <div
-            key={paramName}
-            style={{ display: "flex", alignItems: "center" }}
+      {non_changeable.map((paramName) => (
+        <Grid container style={{ paddingRight: "50px", paddingBottom: "10px" }}>
+          <Grid item md={4}>
+            <div key={paramName}>
+              <label htmlFor={paramName}>{paramName}</label>
+            </div>
+          </Grid>
+          <Grid item md={8}>
+            <div>
+              {paramName === "contact" ? (
+                <a
+                  href={`mailto:${formState[paramName]}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#1976d2" }}
+                >
+                  {formState[paramName]}
+                </a>
+              ) : ["link", "doi"].includes(paramName) ? (
+                <a
+                  href={formState[paramName]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#1976d2" }}
+                >
+                  {formState[paramName]}
+                </a>
+              ) : (
+                formState[paramName]
+              )}
+            </div>
+          </Grid>
+        </Grid>
+      ))}
+      {Object.keys(formState)
+        .filter((paramName) => !non_changeable.includes(paramName))
+        .map((paramName) => (
+          <Grid
+            container
+            style={{
+              paddingRight: "40px",
+              paddingBottom: "10px",
+              justifyContent: "flex-start",
+            }}
+            spacing={1}
           >
-            <label
-              htmlFor={paramName}
-              style={{ flex: "1", textAlign: "right", paddingRight: "10px" }}
-            >
-              {paramName}
-            </label>
-            <Input
-              type="text"
-              id={paramName}
-              inputProps={{ min: 0, style: { flex: "2", textAlign: "center" } }}
-              value={formState[paramName]}
-              onChange={(e) => handleChange(paramName, e.target.value)}
-            />
-          </div>
+            <Grid item md={4}>
+              <div key={paramName}>
+                <label htmlFor={paramName}>{paramName}</label>
+              </div>
+            </Grid>
+            <FormControl onSubmit={handleSubmit}>
+              <Grid item md={8}>
+                <div>
+                  {typeof formState[paramName] === "boolean" ? (
+                    <div style={{ marginLeft: "-10px" }}>
+                      <Checkbox
+                        id={paramName}
+                        checked={formState[paramName]}
+                        onChange={(e) =>
+                          handleChange(paramName, e.target.checked)
+                        }
+                      />
+                    </div>
+                  ) : typeof formState[paramName] === "number" ? (
+                    <Input
+                      type="number"
+                      id={paramName}
+                      value={formState[paramName]}
+                      onChange={(e) =>
+                        handleChange(paramName, parseFloat(e.target.value))
+                      }
+                    />
+                  ) : (
+                    <div>
+                      <Input
+                        type="text"
+                        id={paramName}
+                        value={formState[paramName]}
+                        onChange={(e) =>
+                          handleChange(paramName, e.target.value)
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              </Grid>
+            </FormControl>
+          </Grid>
         ))}
+      <div style={{ paddingTop: "10px" }}>
         <Button
-          style={{ paddingTop: "30px" }}
           onClick={handleSubmit}
           type="submit"
+          variant="contained"
+          sx={{ mr: 2 }}
         >
-          Submit
+          Update Settings
         </Button>
-      </FormControl>
+        <Button onClick={handleClose} variant="outlined">
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 }

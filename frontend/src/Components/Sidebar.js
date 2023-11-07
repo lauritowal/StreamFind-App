@@ -4,6 +4,7 @@ import InsertdriveIcon from "@mui/icons-material/InsertDriveFile";
 import QueryIcon from "@mui/icons-material/QueryStats";
 import "../index.css";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Grid } from "@mui/material";
 
 export default () => {
   const onDragStart = (event, nodeTypes) => {
@@ -13,55 +14,82 @@ export default () => {
 
   return (
     <div className="sidebar">
-      <div className="demo_box">
-        <div className="upper_div">
-          <MenuIcon></MenuIcon>
-          <h4>Objects</h4>
-        </div>
+      <div className="nodeCategory">
+        <h2 className="nodeCategoryTitle">Input</h2>
         <div
-          onDragStart={(event) => onDragStart(event, "MsDataNode")}
+          onDragStart={(event) => onDragStart(event, "MassSpecFiles")}
           draggable
+          className="icon-container"
         >
-          <FolderIcon
-            style={{ fontSize: "6em", color: "orange", cursor: "pointer" }}
-          />
+          <Grid container direction="column" alignItems="center">
+            <Grid item>
+              <InsertdriveIcon
+                style={{
+                  fontSize: "6em",
+                  color: "grey",
+                  cursor: "pointer",
+                }}
+              />
+            </Grid>
+            <h3>MassSpec Files</h3>
+          </Grid>
         </div>
-        <h4>MassSpecData</h4>
       </div>
-      <div className="demo_box">
-        <div className="upper_div">
-          <MenuIcon></MenuIcon>
-          <h4>Input</h4>
-        </div>
+      <div className="nodeCategory">
+        <h2 className="nodeCategoryTitle">Engines</h2>
         <div
-          onDragStart={(event) => onDragStart(event, "MsAnalysisNode")}
+          onDragStart={(event) => onDragStart(event, "MassSpecData")}
           draggable
+          className="icon-container"
         >
-          <InsertdriveIcon
-            style={{ fontSize: "6em", color: "green", cursor: "pointer" }}
-          />
+          <Grid container direction="column" alignItems="center">
+            <Grid item>
+              <FolderIcon
+                style={{
+                  fontSize: "6em",
+                  color: "orange",
+                  cursor: "pointer",
+                }}
+              />
+            </Grid>
+            <h3>MassSpecData</h3>
+          </Grid>
         </div>
-        <h4>mzML</h4>
       </div>
-      <div className="demo_box">
-        <div className="upper_div">
-          <MenuIcon></MenuIcon>
-          <h4>Ms Pre-Processing</h4>
+      <div className="nodeCategory">
+        <h2 className="nodeCategoryTitle">Module Processing</h2>
+        <div
+          onDragStart={(event) => onDragStart(event, "FindFeatures")}
+          draggable
+          className="icon-container"
+        >
+          <Grid container direction="column" alignItems="center">
+            <Grid item>
+              <QueryIcon style={{ fontSize: "6em", cursor: "pointer" }} />
+            </Grid>
+            <h3>find_features</h3>
+          </Grid>
         </div>
         <div
-          onDragStart={(event) => onDragStart(event, "FindFeaturesNode")}
+          onDragStart={(event) => onDragStart(event, "GroupFeatures")}
           draggable
+          className="icon-container"
         >
-          <QueryIcon style={{ fontSize: "6em", cursor: "pointer" }} />
+          <Grid container direction="column" alignItems="center">
+            <Grid item>
+              <QueryIcon
+                style={{
+                  fontSize: "6em",
+                  cursor: "pointer",
+                  color: "#1976d2",
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <h3>group_features</h3>
+            </Grid>
+          </Grid>
         </div>
-        <h4>find_features</h4>
-        <div
-          onDragStart={(event) => onDragStart(event, "GroupFeaturesNode")}
-          draggable
-        >
-          <QueryIcon style={{ fontSize: "6em", cursor: "pointer" }} />
-        </div>
-        <h4>group_features</h4>
       </div>
     </div>
   );

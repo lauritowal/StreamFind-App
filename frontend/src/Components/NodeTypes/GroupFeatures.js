@@ -27,60 +27,50 @@ function GroupFeatures({
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
-  console.log(group_features);
 
   const [groupFeatures, setGroupFeatures] = useState([]);
-  const [params, setParams] = useState([]);
   const [algo, setAlgo] = useState("");
-  const [openObj, setOpenObj] = useState(false);
+  const [version, setVersion] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
   const [selectAlgo, setSelectAlgo] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 350,
-    height: 100,
-    bgcolor: "white",
-    border: "2px solid white",
-    borderRadius: "25px",
-    p: 5,
-  };
-  const style1 = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 350,
-    height: 400,
-    bgcolor: "white",
-    border: "2px solid white",
-    borderRadius: "25px",
-    p: 5,
-  };
-  const style2 = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 350,
-    height: 800,
-    bgcolor: "white",
-    border: "2px solid white",
-    borderRadius: "25px",
-    p: 5,
-  };
+  const [color, setColor] = useState(false);
 
   const handleClose = () => {
     setOpenModal(false);
-    setOpenObj(false);
+    setOpenDialog(false);
     setSelectAlgo(false);
   };
 
   const openSelectAlgo = () => {
     setSelectAlgo(true);
+  };
+
+  const DialogStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 350,
+    height: 110,
+    bgcolor: "white",
+    border: "2px solid white",
+    borderRadius: "25px",
+    p: 5,
+  };
+
+  const ParamStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    maxHeight: 900,
+    overflowY: "auto",
+    bgcolor: "white",
+    border: "2px solid white",
+    borderRadius: "25px",
+    p: 5,
   };
 
   const getFeatures = () => {
@@ -94,7 +84,8 @@ function GroupFeatures({
         console.log("Getting group features", response);
         console.log(response.data);
         setGroupFeatures(response.data.file_name);
-        setOpenObj(true);
+        setOpenDialog(true);
+        setColor(true);
       })
       .catch((error) => {
         console.error("Error sending files:", error);
@@ -104,13 +95,14 @@ function GroupFeatures({
   const getParameters = () => {
     const requestData = {
       fileNames: group_features,
+      type: "group_features",
       algorithm: algo,
     };
     axios
       .post("http://127.0.0.1:8000/get_parameters", requestData)
       .then((response) => {
         console.log("Getting Parameters", response);
-        setParams(response.data.parameters.groupParam);
+        setVersion(response.data.version);
         setOpenModal(true);
       })
       .catch((error) => {
@@ -121,7 +113,9 @@ function GroupFeatures({
 
   return (
     <div>
-      <QueryStatsIcon style={{ fontSize: "3em", cursor: "pointer" }} />
+      <QueryStatsIcon
+        style={{ fontSize: "3em", cursor: "pointer", color: "#1976d2" }}
+      />
       <div
         style={{
           position: "absolute",
@@ -135,13 +129,25 @@ function GroupFeatures({
           fontSize="1"
         />
       </div>
-      <p style={{ fontSize: "7px", position: "absolute", top: 45, left: -9 }}>
+      <p
+        style={{
+          fontSize: "7px",
+          position: "fixed",
+          textAlign: "center",
+        }}
+      >
         group_features
       </p>
       <PlayIcon
-        onClick={openSelectAlgo}
+        onClick={() => {
+          if (algo.length > 0) {
+            getFeatures();
+          } else {
+            openSelectAlgo();
+          }
+        }}
         style={{
-          color: group_features.length > 0 ? "green" : "red",
+          color: color ? "green" : "red",
           cursor: "pointer",
           fontSize: "10px",
           position: "absolute",
@@ -178,7 +184,7 @@ function GroupFeatures({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={DialogStyle}>
           <IconButton
             onClick={handleClose}
             aria-label="close"
@@ -207,16 +213,20 @@ function GroupFeatures({
               </MenuItem>
             </Select>
           </FormControl>
-          <Button onClick={getFeatures}>Apply!</Button>
+          <div>
+            <Button onClick={handleClose} variant="contained">
+              OK
+            </Button>
+          </div>
         </Box>
       </Modal>
       <Modal
-        open={openObj}
+        open={openDialog}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={DialogStyle}>
           <IconButton
             onClick={handleClose}
             aria-label="close"
@@ -229,11 +239,22 @@ function GroupFeatures({
             <CloseIcon />
           </IconButton>
           <div style={{ display: "flex" }}>
-            <CheckCircleIcon />
+            <CheckCircleIcon sx={{ color: "green", marginRight: "4px" }} />
             <Typography id="modal-modal-title" variant="h9" component="h2">
-              group_features applied!
+              Group features applied with {algo}!
             </Typography>
           </div>
+          <Button
+            style={{
+              position: "absolute",
+              right: 300,
+              top: 110,
+            }}
+            onClick={handleClose}
+            variant="contained"
+          >
+            OK
+          </Button>
         </Box>
       </Modal>
       <Modal
@@ -242,11 +263,12 @@ function GroupFeatures({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style2}>
+        <Box sx={ParamStyle}>
           <ChangeParameters
             handleClose={handleClose}
-            group_features={groupFeatures}
-            params={params}
+            group_features={group_features}
+            algo={algo}
+            version={version}
           />
         </Box>
       </Modal>

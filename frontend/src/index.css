@@ -46,10 +46,10 @@ body {
   border-top: 1px solid #eee;
 }
 
-.demo_box {
+.nodeCategory {
   flex: 0 0 15%;
   height: 28vh;
-  background-color: #c1eff9;
+  background-color: #ebebeb;
   border-radius: 0px;
   border: 1px solid black;
   margin-left: 8px;
@@ -57,15 +57,8 @@ body {
   overflow: hidden;
 }
 
-.upper_div {
-  display: flex;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-}
-
 .table-container {
-  max-width: 800px;
+  max-width: 1450px;
   position: absolute;
 }
 
@@ -84,4 +77,20 @@ td {
 
 th {
   background-color: #f2f2f2;
+}
+
+.nodeCategoryTitle {
+  margin-left: 19px;
+}
+
+.icon-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: left;
+  text-align: left;
+  padding-right: 5%;
+}
+
+.icon-container h3 {
+  margin-top: 8px;
 }
